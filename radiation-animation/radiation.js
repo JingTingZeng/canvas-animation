@@ -1,9 +1,9 @@
 const config = {
   radius1: 100, //內圓半徑
   radius2: 3000, //外圓半徑
-  distance: 100, // 內外圓距離
+  distance: 200, // 內外圓距離
   velocity: 2, // 速度
-  lineLength: 120, // 射線長度
+  lineLength: 200, // 射線長度
   lineWidth: 4, // 射線寬度
   totalLine: 50 // 射線總數量
 };
@@ -60,8 +60,10 @@ class RadiationLine {
 
 update = () => {
   console.log('update');
-  ctx.clearRect(canvas.width / 2 * -1, canvas.height / 2 * -1, canvas.width, canvas.height);
 
+  ctx.clearRect(canvas.width / 2 * -1, canvas.height / 2 * -1, canvas.width, canvas.height);
+  ctx.fillStyle = "#00A8A9";
+  ctx.fillRect(canvas.width / 2 * -1, canvas.height / 2 * -1, canvas.width, canvas.height);
 
   objList.forEach(obj => {
     obj.update();
@@ -74,12 +76,21 @@ update = () => {
 
     }
 
+
+
+
     ctx.beginPath();
     ctx.moveTo(obj.position[0], obj.position[1]);
     ctx.lineTo(obj.position[2], obj.position[3]);
     ctx.closePath();
-    ctx.stroke();
 
+    const gradient = ctx.createLinearGradient(obj.position[0], obj.position[1], obj.position[2], obj.position[3]);
+
+    gradient.addColorStop(0, '#00A8A9');
+    gradient.addColorStop(1, 'white');
+
+    ctx.strokeStyle = gradient;
+    ctx.stroke();
   })
 
 
@@ -89,7 +100,7 @@ update = () => {
 draw = () => {
   const count = config.totalLine;
   ctx.save();
-  ctx.strokeStyle = 'green';
+  // ctx.strokeStyle = 'white';
   ctx.lineWidth = config.lineWidth;
   ctx.translate(canvas.width / 2, canvas.height / 2);
 
